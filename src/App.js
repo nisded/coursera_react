@@ -11,7 +11,7 @@ class App extends Component {
             dishes: DISHES
         };
     }
-    
+
     render() {
         return (
             <div className="App">
@@ -20,7 +20,7 @@ class App extends Component {
                         <NavbarBrand href="/">Ristorante Con Fusion</NavbarBrand>
                     </div>
                 </Navbar>
-                <Menu dishes={this.state.dishes}/>
+                <Menu dishes={this.state.dishes} />
             </div>
         );
     }

@@ -23,8 +23,8 @@ class DishDetail extends Component {
                 return ( 
                     <li key={fullcomment.id}>
                         <p>{fullcomment.comment}</p>
-                        <p>--{fullcomment.author}, {new Date(fullcomment.date).toLocaleDateString("en-US", 
-                                                        { year: "numeric", month: "short", day: "numeric" })}
+                        <p>--{fullcomment.author}, {new Intl.DateTimeFormat('en-US', 
+                                                        {year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(fullcomment.date)))}
                         </p>
                     </li>
                 );
@@ -48,12 +48,14 @@ class DishDetail extends Component {
         if (dish != null) 
             dishComments = dish.comments;
         return (
-            <div className="row">
-                <div className="col-12 col-md-5 m-1">
-                    {this.renderDish(dish)}
-                </div>
-                <div className="col-12 col-md-5 m-1">
-                    {this.renderComments(dishComments)}
+            <div className="container">
+                <div className="row">
+                    <div className="col-12 col-md-5 m-1">
+                        {this.renderDish(dish)}
+                    </div>
+                    <div className="col-12 col-md-5 m-1">
+                        {this.renderComments(dishComments)}
+                    </div>
                 </div>
             </div>
         );        

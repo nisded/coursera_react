@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { LocalForm, Control, Errors } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 const minLength = (len) => (val) => val && (val.length >= len);
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -98,41 +99,43 @@ class CommentForm extends Component {
 // render a card with info about dish
 function RenderDish({dish}) {
     return (
-        <Card>
-            <CardImg src={baseUrl + dish.image} alt={dish.name} />
-            <CardBody>
-                <CardTitle>{dish.name}</CardTitle>
-                <CardText>{dish.description}</CardText>
-            </CardBody>
-        </Card>
+        <FadeTransform in transformProps={{ exitTransform: 'scale(0.5) translateY(-50%)' }}>
+            <Card>
+                <CardImg src={baseUrl + dish.image} alt={dish.name} />
+                <CardBody>
+                    <CardTitle>{dish.name}</CardTitle>
+                    <CardText>{dish.description}</CardText>
+                </CardBody>
+            </Card>
+        </FadeTransform>
     );
 }
 
 // render list items with comments for dish
 function RenderComments({comments, dishId, postComment}) {
-    if (comments == null)
-        return (<div></div>);
-
-    const renderedComments = comments.map((fullcomment) => {
-        return ( 
-            <li key={fullcomment.id}>
-                <p>{fullcomment.comment}</p>
-                <p>--{fullcomment.author}, {new Intl.DateTimeFormat('en-US', 
-                                                {year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(fullcomment.date)))}
-                </p>
-            </li>
-        );
-    });
-
-    return (
-        <div>
-            <h4>Comments</h4>
-            <ul className="list-unstyled">
-                {renderedComments}
-            </ul>
-            <CommentForm dishId={dishId} postComment={postComment} />
-        </div>
-    );
+    if (comments != null)
+        return (
+            <div>
+                <h4>Comments</h4>
+                <ul className="list-unstyled">
+                    <Stagger in>
+                        {comments.map((fullcomment) => {
+                            return ( 
+                                <Fade in>
+                                    <li key={fullcomment.id}>
+                                        <p>{fullcomment.comment}</p>
+                                        <p>--{fullcomment.author}, {new Intl.DateTimeFormat('en-US', 
+                                                                        {year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(fullcomment.date)))}
+                                        </p>
+                                    </li>
+                                </Fade>
+                            );
+                        })}
+                    </Stagger>
+                </ul>
+                <CommentForm dishId={dishId} postComment={postComment} />
+            </div>
+        );    
 }
 
 // render dish details with comments of clients

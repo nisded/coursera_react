@@ -3,6 +3,7 @@ import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbIte
     Modal, ModalHeader, ModalBody, Row, Col, Label } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { LocalForm, Control, Errors } from 'react-redux-form';
+import { Loading } from './LoadingComponent';
 
 const minLength = (len) => (val) => val && (val.length >= len);
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -95,9 +96,6 @@ class CommentForm extends Component {
 
 // render a card with info about dish
 function RenderDish({dish}) {
-    if (dish == null) 
-        return (<div></div>);
-
     return (
         <Card>
             <CardImg src={dish.image} alt={dish.name} />
@@ -138,28 +136,50 @@ function RenderComments({comments, dishId, addComment}) {
 
 // render dish details with comments of clients
 const DishDetail = (props) => {
-    return (
-        <div className="container">
-            <div className="row">
-                <Breadcrumb>
-                    <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
-                    <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
-                </Breadcrumb>
-                <div className="col-12">
-                    <h3>{props.dish.name}</h3>
-                    <hr />
-                </div> 
-            </div>
-            <div className="row">
-                <div className="col-12 col-md-5 m-1">
-                    <RenderDish dish={props.dish} />
-                </div>
-                <div className="col-12 col-md-5 m-1">
-                    <RenderComments comments={props.comments} dishId={props.dish.id} addComment={props.addComment} />
+    if (props.isLoading) {    //dishes are fetching from server
+        return (
+            <div className="container">
+                <div className="row">
+                    <Loading />
                 </div>
             </div>
-        </div>
-    );        
+        );
+    }
+
+    if (props.errMess) {      //error while fetching dishes
+        return (
+            <div className="container">
+                <div className="row">
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        );
+    }
+    
+    if (props.dish != null) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <Breadcrumb>
+                        <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
+                        <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+                    </Breadcrumb>
+                    <div className="col-12">
+                        <h3>{props.dish.name}</h3>
+                        <hr />
+                    </div> 
+                </div>
+                <div className="row">
+                    <div className="col-12 col-md-5 m-1">
+                        <RenderDish dish={props.dish} />
+                    </div>
+                    <div className="col-12 col-md-5 m-1">
+                        <RenderComments comments={props.comments} dishId={props.dish.id} addComment={props.addComment} />
+                    </div>
+                </div>
+            </div>
+        );  
+    }      
 }
 
 export default DishDetail;

@@ -74,7 +74,7 @@ class CommentForm extends Component {
                             </Row>
                             <Row className="form-group">
                                 <Col>
-                                    <Label htmlFor="comment">Your Name</Label>
+                                    <Label htmlFor="comment">Comment</Label>
                                     <Control.textarea model=".comment" id="comment" name="comment" 
                                         rows="6"
                                         className="form-control"                                 

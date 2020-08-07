@@ -38,7 +38,7 @@ function About(props) {
             <div className="container">
                 <div className="row"> 
                     <div className="col-12">
-                        <h4>{props.dishes.errMess}</h4>
+                        <h4>{props.leaders.errMess}</h4>
                     </div>
                 </div>
             </div>
